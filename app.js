@@ -11,6 +11,7 @@ app.post('/Register',async(req,res)=>{
     let result=await data.save()
     // result=result.toObject();
     // delete result.password
+    //console.log(fdss)
     res.send(result)
 })
 app.listen(5000,console.log('server is running on port 5000'))
