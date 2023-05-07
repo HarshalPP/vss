@@ -2,7 +2,7 @@ const express=require('express')
 const app=express()
 require('./db/config')
 const user=require('./db/model.js')
-
+//middleware
 app.use(express.json())
 
 // sign up API
