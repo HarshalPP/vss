@@ -14,10 +14,9 @@ const adminSchema = new Schema({
    },
    status:
    {
-     type:String
+     type:String,
+     default:false
    }
-   
-   
 });
 const Adminlogin = mongoose.model('admins', adminSchema);
 module.exports = Adminlogin;

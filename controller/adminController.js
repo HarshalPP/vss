@@ -14,7 +14,7 @@
 //             const updateSalesorder = await updatedUser.save();
 //             // res.status(200).json({ "message": "sucess" });
 //             jwt.sign({ newUser },secretkey, { expiresIn: '24h' }, (err, token) => {
-            
+
 //                 res.status(200).json({ "status": /*"1"*/"true", "data": { "_id": newUser['_id'], "username": newUser['username'], token } , updateSalesorder});
 //             });
 //         }
@@ -37,7 +37,7 @@
 //       res.status(500).json({ error: "Internal server error" });
 //     }
 //   };
-  
+
 // exports.checkStatus = async(req,res)=>{
 //     const adminStatus =await Adminlogin.findOne();
 //     res.status(200).json({"message":"admin status","loginStatus":adminStatus['status']});
@@ -49,11 +49,11 @@
 //     const updateSalesorder = await updatedUser.save();
 
 //     setInterval(()=>{
-      
-    
+
+
 //             updatedUser.set({"status":"false"}); //"0"
 //             updatedUser.save();
-        
+
 //     },43200000);
 
 
@@ -74,7 +74,7 @@ exports.auth = async (req, res) => {
     if (newUser) {
       newUser.status = true; // Update the status value directly
       const updatedUser = await newUser.save();
-      
+
       jwt.sign({ newUser }, secretkey, { expiresIn: '24h' }, (err, token) => {
         res.status(200).json({
           status: true,
@@ -89,23 +89,44 @@ exports.auth = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+// Create a new user
+exports.createUser = async (req, res) => {
+  try {
+    const { username, password, status } = req.body;
+    
+    // Create a new user
+    const newUser = new Adminlogin({
+      username: username,
+      password: md5(password), // Hash the password
+      status: status
+    });
+    
+    // Save the new user to the database
+    const savedUser = await newUser.save();
+    
+    res.status(200).json({ message: "User created successfully", user: savedUser });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 exports.changeStatus = async (req, res) => {
-    try {
-      const updatedUser = await Adminlogin.findOne();
-      if (updatedUser) {
-        updatedUser.status = false; // Change the status value directly
-        const updatedSalesOrder = await updatedUser.save();
-        res.status(200).json({ msg: "Status changed", updatedSalesOrder });
-      } else {
-        res.status(200).json({ message: "No user found" });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
+  try {
+    const updatedUser = await Adminlogin.findOne();
+    if (updatedUser) {
+      updatedUser.status = false; // Change the status value directly
+      const updatedSalesOrder = await updatedUser.save();
+      res.status(200).json({ msg: "Status changed", updatedSalesOrder });
+    } else {
+      res.status(200).json({ message: "No user found" });
     }
-  };
-  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 // exports.checkStatus = async (req, res) => {
 //   try {
@@ -118,19 +139,19 @@ exports.changeStatus = async (req, res) => {
 // };
 
 exports.checkStatus = async (req, res) => {
-    try {
-      const adminStatus = await Adminlogin.findOne();
-      if (adminStatus) {
-        res.status(200).json({ message: "Admin status", loginStatus: adminStatus.status });
-      } else {
-        res.status(200).json({ message: "No user found" });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
+  try {
+    const adminStatus = await Adminlogin.findOne();
+    if (adminStatus) {
+      res.status(200).json({ message: "Admin status", loginStatus: adminStatus.status });
+    } else {
+      res.status(200).json({ message: "No user found" });
     }
-  };
-  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 // exports.manualchanges = async (req, res) => {
 //   try {
@@ -151,25 +172,25 @@ exports.checkStatus = async (req, res) => {
 // };
 
 exports.manualchanges = async (req, res) => {
-    try {
-      const updatedUser = await Adminlogin.findOne();
-      if (updatedUser) {
-        updatedUser.set(req.body); // Update the document with the request body data
-        const updateSalesOrder = await updatedUser.save(); // Save the updated document
-  
-        setInterval(() => {
-          updatedUser.status = false; // Change the status value directly on the updatedUser object
-          updatedUser.save(); // Save the updated document
-        }, 43200000); // The interval is set to 12 hours (43200000 milliseconds)
-  
-        res.status(200).json({ msg: "Status change" ,updateSalesOrder});
-      } else {
-        res.status(200).json({ message: "No user found" });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
+  try {
+    const updatedUser = await Adminlogin.findOne();
+    if (updatedUser) {
+      updatedUser.set(req.body); // Update the document with the request body data
+      const updateSalesOrder = await updatedUser.save(); // Save the updated document
+
+      setInterval(() => {
+        updatedUser.status = false; // Change the status value directly on the updatedUser object
+        updatedUser.save(); // Save the updated document
+      }, 43200000); // The interval is set to 12 hours (43200000 milliseconds)
+
+      res.status(200).json({ msg: "Status change", updateSalesOrder });
+    } else {
+      res.status(200).json({ message: "No user found" });
     }
-  };
-  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
