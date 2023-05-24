@@ -25,6 +25,7 @@ const salesclientRouter = require("./routes/salesclient");
 const usersLoginRouter = require("./routes/usersLogin");
 const productionheadRouter = require("./routes/productionhead");
 const addStockRouter=require("./routes/addStock");
+const stockManager=require('./routes/stockManager')
 
 app.use("/admin", adminRouter);
 app.use("/sales", salesRouter);
@@ -34,6 +35,7 @@ app.use("/salesclient", salesclientRouter);
 app.use("/usersLogin", usersLoginRouter);
 app.use("/productionhead", productionheadRouter);
 app.use("/addstock",addStockRouter);
+app.use("/stockManager",stockManager)
 
 // ------amit-------
 // Require routes

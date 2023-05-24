@@ -1,7 +1,6 @@
 const { Mongoose } = require("mongoose");
 const saleorders = require("../models/sales");
 const UserManagement = require("../models/user_management");
-
 require('isodate');
 require('moment');
 
